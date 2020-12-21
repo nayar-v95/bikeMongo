@@ -1,9 +1,11 @@
 package com.bikemongo.api.repositories;
 
-import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
 import com.bikemongo.api.model.Bike;
-
-public interface BikeRepository extends ReactiveMongoRepository<Bike, String> {
+@Repository
+public interface BikeRepository extends CrudRepository<Bike, String> {
+	  Bike findByEmail(String email);
 
 }
