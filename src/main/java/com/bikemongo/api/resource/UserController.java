@@ -49,6 +49,19 @@ public class UserController {
 		userRepository.deleteAll();
 		return "Deleted All";
 	}
+
+	@ResponseBody
+	@PostMapping("/api/v1/user/login")
+	public boolean login(@RequestBody User user) {
+		User fetchedUser;
+		fetchedUser = getbyEmail(user.getEmail());
+		System.out.println(user.toString());
+		System.out.println(fetchedUser.toString());
+		
+		if(fetchedUser.getPassword().equals(user.getPassword()) )
+			return true;
+		return false;
+	}
 	
 	
 }
