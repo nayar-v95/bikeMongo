@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import com.bikemongo.api.model.Bike;
 @Repository
-public interface BikeRepository extends CrudRepository<Bike, String> {
+public interface BikeRepository extends CrudRepository <Bike, String> {
 	  Bike findByEmail(String email);
 
 }
