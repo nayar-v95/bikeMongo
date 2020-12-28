@@ -25,22 +25,28 @@ public class UserController {
 	}
 	@GetMapping("/api/v1/user/email/{email}")
 	public User  getbyEmail(@PathVariable String email) {
-		return userRepository.findByEmail(email);
+		return userRepository.findAllByEmail(email);
 	}
 	@ResponseBody
 	@PostMapping(value = "/api/v1/user/register", headers = {
 	            "content-type=application/json" }, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public User addBike(@RequestBody User user) {
-		return  userRepository.save(user);
+	public Boolean addUser(@RequestBody User user) {
+			User  userByEmail = getbyEmail(user.getEmail());
+		if(userByEmail != null) {
+			System.out.println("email alredy in user");
+			return false;
+		}
+		userRepository.save(user);
+		return true ;
 			
 	}
 	@DeleteMapping("/api/v1/user/{email}")
-	public String deleteBike(@PathVariable String email) {
+	public String deleteUser(@PathVariable String email) {
 		userRepository.deleteById(email);
 		return "Deleted";
 	}
 	@PatchMapping("/api/v1/user/{email}")
-	public String updateBike(@PathVariable String email,@RequestBody User user) {
+	public String updateUser(@PathVariable String email,@RequestBody User user) {
 		return "failed";
 		
 	}
@@ -54,13 +60,15 @@ public class UserController {
 	@PostMapping("/api/v1/user/login")
 	public boolean login(@RequestBody User user) {
 		User fetchedUser;
+		boolean success = false;
 		fetchedUser = getbyEmail(user.getEmail());
 		System.out.println(user.toString());
 		System.out.println(fetchedUser.toString());
 		
 		if(fetchedUser.getPassword().equals(user.getPassword()) )
-			return true;
-		return false;
+			success = true;
+		System.out.println(success);
+		return success;
 	}
 	
 	

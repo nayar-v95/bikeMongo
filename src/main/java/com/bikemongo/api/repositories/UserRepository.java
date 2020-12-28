@@ -6,4 +6,5 @@ import com.bikemongo.api.model.User;
 
 public interface UserRepository extends CrudRepository<User, String> {
 	User findByEmail(String email);
+	User findAllByEmail(String email);
 }
