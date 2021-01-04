@@ -1,5 +1,6 @@
 package com.bikemongo.api.resource;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,9 +36,11 @@ public class BikeController {
 	}
 	
 	@GetMapping("/api/v1/bikes/email/{email}")
-	public Bike  getbyEmail(@PathVariable String email) {
+	public  Iterable<Bike>  getbyEmail(@PathVariable String email) {
 		System.out.println(email);
-		return bikeRepository.findByEmail(email);
+		Iterable<Bike> bikes =  getBikes();
+		//filter baesd on email.
+		return bikes;
 		
 	}
 	
