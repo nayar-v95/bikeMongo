@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,49 +18,50 @@ import com.bikemongo.api.repositories.UserRepository;
 
 @RestController
 @CrossOrigin(origins = "*")
+@RequestMapping("/api/v1")
 public class UserController {
 	@Autowired
 	private UserRepository userRepository;
 	
-	@GetMapping("/api/v1/users")
+	@GetMapping("/users")
 	public Iterable<User> getUsers(){
 		return  userRepository.findAll();
 	}
-	@GetMapping("/api/v1/user/email/{email}")
+	@GetMapping("/user/email/{email}")
 	public User  getbyEmail(@PathVariable String email) {
 		return userRepository.findAllByEmail(email);
 	}
 	@ResponseBody
-	@PostMapping(value = "/api/v1/user/register", headers = {
+	@PostMapping(value = "/user/register", headers = {
 	            "content-type=application/json" }, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public Boolean addUser(@RequestBody User user) {
 			User  userByEmail = getbyEmail(user.getEmail());
 		if(userByEmail != null) {
-			System.out.println("email alredy in user");
+			System.out.println("email already in use");
 			return false;
 		}
 		userRepository.save(user);
 		return true ;
 			
 	}
-	@DeleteMapping("/api/v1/user/{email}")
+	@DeleteMapping("/user/{email}")
 	public String deleteUser(@PathVariable String email) {
 		userRepository.deleteById(email);
 		return "Deleted";
 	}
-	@PatchMapping("/api/v1/user/{email}")
+	@PatchMapping("/user/{email}")
 	public String updateUser(@PathVariable String email,@RequestBody User user) {
 		return "failed";
 		
 	}
-	@DeleteMapping("/api/vq/users/deleteAll")
+	@DeleteMapping("/users/deleteAll")
 	public String deleteAll() {
 		userRepository.deleteAll();
 		return "Deleted All";
 	}
 
 	@ResponseBody
-	@PostMapping("/api/v1/user/login")
+	@PostMapping("/user/login")
 	public boolean login(@RequestBody User user) {
 		User fetchedUser;
 		boolean success = false;
